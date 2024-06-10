@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Candidatos</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos específicos para esta página de cadastro */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        #pdfContainer {
+            width: 60%;
+            margin-right: 20px;
+            height: 100%;
+        }
+
+        #pdfViewer {
+            width: 100%;
+            height: calc(100vh - 40px);
+        }
+
+        #formContainer {
+            width: 40%;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #formContainer h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #formContainer label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #formContainer select,
+        #formContainer input[type="text"],
+        #formContainer textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #formContainer input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #formContainer input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #returnButton {
+            display: block;
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        #returnButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="pdfContainer">
+        <embed id="pdfViewer" src="" type="application/pdf" width="100%" height="100%">
+    </div>
+
+    <div id="formContainer">
+        <h2>Ficha do Candidato</h2>
+        <form id="candidateForm">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="age">Idade:</label>
+            <input type="text" id="age" name="age" required>
+
+            <label for="city">Cidade:</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="position">Vaga Concorrida:</label>
+            <input type="text" id="position" name="position" required>
+
+            <label for="status">Situação do Processo:</label>
+            <select id="status" name="status">
+                <option value="Em análise">Entrevista</option>
+                <option value="Em entrevista">Teste Técnico</option>
+                <option value="Aprovado">Negociação</option>
+                <option value="Reprovado">Contratado</option>
+                <option value="Reprovado">Reprovado</option>
+            </select>
+
+            <label for="observations">Observações:</label>
+            <textarea id="observations" name="observations" rows="4"></textarea>
+
+            <input type="submit" value="Salvar">
+        </form>
+        <a href="pdfs.html" id="returnButton">Retornar aos acompanhamentos</a>
+    </div>
+
+    <script src="pdf.js"></script>
+    <script>
+        // Recuperar o índice do PDF a partir da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const index = urlParams.get('index');
+
+        // Carregar o PDF correspondente ao índice
+        const pdfs = JSON.parse(localStorage.getItem('pdfs')) || [];
+        const pdfDataUrl = pdfs[index];
+        document.getElementById('pdfViewer').src = pdfDataUrl;
+
+        // Carregar dados salvos nos campos do formulário, se disponíveis
+        const savedFormData = JSON.parse(localStorage.getItem(`formData_${index}`)) || {};
+        document.getElementById('name').value = savedFormData.name || '';
+        document.getElementById('age').value = savedFormData.age || '';
+        document.getElementById('city').value = savedFormData.city || '';
+        document.getElementById('position').value = savedFormData.position || '';
+        document.getElementById('status').value = savedFormData.status || '';
+        document.getElementById('observations').value = savedFormData.observations || '';
+
+        // Adicionar evento de envio do formulário
+        document.getElementById('candidateForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Obter os dados do formulário
+            const formData = {
+                name: document.getElementById('name').value,
+                age: document.getElementById('age').value,
+                city: document.getElementById('city').value,
+                position: document.getElementById('position').value,
+                status: document.getElementById('status').value,
+                observations: document.getElementById('observations').value
+            };
+            // Salvar os dados no armazenamento local
+            localStorage.setItem(`formData_${index}`, JSON.stringify(formData));
+            // Limpar o formulário após o envio
+            event.target.reset();
+        });
+    </script>
+</body>
+</html>

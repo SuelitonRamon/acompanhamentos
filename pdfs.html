@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acompanhamentos</title>
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <header class="header">
+        <!-- Foto do usuário -->
+        <div class="user-info">
+            <div id="userPhoto" class="user-photo" style="background-image: url('mateus.jpg');"></div>
+            <!-- Nome do usuário -->
+            <div id="userName" class="user-name">Olá Mateus Colabone!</div>
+        </div>
+    </header>
+    <div class="pdf-container">
+        <h2>Seus Acompanhamentos</h2>
+        <div id="pdfList" class="pdf-list">
+            <!-- Miniaturas de PDFs serão adicionadas aqui -->
+        </div>
+        <div class="buttons-container">
+            <button id="addPdfButton" class="btn"><i class="fas fa-plus-circle"></i> Adicionar PDF</button>
+            <button id="clearStorageButton" class="btn"><i class="fas fa-trash-alt"></i> Limpar PDFs</button>
+        </div>
+        <input type="file" id="fileInput" accept="application/pdf" style="display: none;">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <script src="pdfs.js"></script>
+</body>
+</html>
